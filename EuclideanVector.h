@@ -3,6 +3,8 @@
 //
 #include <arpa/nameser.h>
 #include <vector>
+#include <list>
+#include <iterator>
 
 #ifndef ASS2_EUCLIDEANVECTOR_H
 #define ASS2_EUCLIDEANVECTOR_H
@@ -14,15 +16,44 @@ namespace evec {
     private:
         std::vector<double> *magnit;
     public:
+        /******************************************************/
+        /************* Constructor ****************************/
+        /******************************************************/
+
         // initial pointer;
-        EuclideanVector(int n_dim, double i_mag) : magnit{new std::vector<double>(n_dim, i_mag)} {}
+        EuclideanVector(int n_dim, double i_mag);
+
         // delegate constructor
-        EuclideanVector(int n_dim) : magnit{new std::vector<double>(n_dim, 0.0)} {}
+        EuclideanVector(int n_dim);
+
         // template/range constructor
-        template<class T> EuclideanVector(T first, T last):magnit{new std::vector<T>(first, last)} {}
+//        template<class T>
+        EuclideanVector(std::_List_iterator<double> begin, std::_List_iterator<double> end);
+
+//        template<class C>
+        EuclideanVector(std::vector<double>::const_iterator begin, std::vector<double>::const_iterator end);
+
         // initial_list constructor
-        EuclideanVector(std::initializer_list<double> il):magnit{new std::vector<double>(il)} {}
-        void getc() ;
+        EuclideanVector(std::initializer_list<double> il);
+
+        // Copy constructor
+        EuclideanVector(const EuclideanVector &a);
+
+        // move constructor
+        EuclideanVector(EuclideanVector &&a);
+
+        // Destructor, need more stuff
+        ~EuclideanVector();
+
+        /*****************************************************/
+        /*************** Member function *********************/
+        /*****************************************************/
+        unsigned int getNumDimensions();
+        double get(unsigned int i);
+
+        void getc();
+
     };
 }
 
+// Two question template declaration, and test case all double?
