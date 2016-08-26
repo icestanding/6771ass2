@@ -1,6 +1,6 @@
 #include "EuclideanVector.h"
 #include <iostream>
-
+#include<cmath>
 //
 // Created by chenyu on 24/08/16.
 //
@@ -54,6 +54,14 @@ unsigned int evec::EuclideanVector::getNumDimensions() {
 double evec::EuclideanVector::get(unsigned int i) {
     return magnit->at(i);
 }
+double evec::EuclideanVector::getEuclideanNorm(){
+    double result = 0;
+    for (unsigned int i = 0; i < magnit->size(); ++i) {
+        result += pow(magnit->at(i), 2);
+    }
+    return sqrt(result);
+}
+
 void evec::EuclideanVector::getc(){
     std::cout<<this->magnit->size();
 }

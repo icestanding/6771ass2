@@ -50,6 +50,7 @@ namespace evec {
         /*****************************************************/
         unsigned int getNumDimensions();
         double get(unsigned int i);
+        double getEuclideanNorm();
 
         void getc();
 
