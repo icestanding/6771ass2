@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <iterator>
+#include <cmath>
 
 #ifndef ASS2_EUCLIDEANVECTOR_H
 #define ASS2_EUCLIDEANVECTOR_H
@@ -19,7 +20,7 @@ namespace evec {
         /******************************************************/
         /************* Constructor ****************************/
         /******************************************************/
-
+        EuclideanVector();
         // initial pointer;
         EuclideanVector(int n_dim, double i_mag);
 
@@ -28,7 +29,7 @@ namespace evec {
 
         // template/range constructor
 //        template<class T>
-        EuclideanVector(std::_List_iterator<double> begin, std::_List_iterator<double> end);
+        EuclideanVector(std::list<double>::iterator begin, std::list<double>::iterator end);
 
 //        template<class C>
         EuclideanVector(std::vector<double>::const_iterator begin, std::vector<double>::const_iterator end);
@@ -48,13 +49,29 @@ namespace evec {
         /*****************************************************/
         /*************** Member function *********************/
         /*****************************************************/
-        unsigned int getNumDimensions();
-        double get(unsigned int i);
+        unsigned int getNumDimensions() const;
+        double get(unsigned int i) const;
         double getEuclideanNorm();
+        EuclideanVector createUnitVector();
+
+        /*****************************************************/
+        /*************** operator overload *******************/
+        /*****************************************************/
+
+        // get specific value
+        double & operator[](int i);
+
+        // copy assignment
+        EuclideanVector & operator=(const EuclideanVector &rhs);
+
+        friend EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &);
 
         void getc();
 
     };
+
+    EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &) ;
+
 }
 
 // Two question template declaration, and test case all double?

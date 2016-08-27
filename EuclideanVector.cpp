@@ -5,6 +5,8 @@
 // Created by chenyu on 24/08/16.
 //
 
+// be remeber of the return scope of the code
+
 /******************************************************/
 /************* Constructor ****************************/
 /******************************************************/
@@ -13,6 +15,7 @@ evec::EuclideanVector::EuclideanVector(int n_dim, double i_mag) : magnit{new std
 // delegate constructor
 evec::EuclideanVector::EuclideanVector(int n_dim) : magnit{new std::vector<double>(n_dim, 0.0)} {}
 
+evec::EuclideanVector::EuclideanVector():magnit{new std::vector<double>(1, 0.0)} {}
 // initial_list constructor
 evec::EuclideanVector::EuclideanVector(std::initializer_list<double> il):magnit{new std::vector<double>(il)} {}
 
@@ -23,8 +26,8 @@ evec::EuclideanVector::EuclideanVector(const evec::EuclideanVector &a): magnit{n
 //template<class T>
 //evec:: EuclideanVector::EuclideanVector(std::_List_iterator<T> a, std::_List_iterator<T> b):magnit{new std::vector<T>{a, b}} {}
 evec::EuclideanVector::
-EuclideanVector(std::_List_iterator<double> begin,
-                std::_List_iterator<double> end):
+EuclideanVector(std::list<double>::iterator begin ,
+                std::list<double>::iterator end):
         magnit{new std::vector<double>{begin, end}} {};
 
 evec::EuclideanVector::
@@ -48,10 +51,10 @@ evec::EuclideanVector::~EuclideanVector() {
 /*****************************************************/
 
 // getNumDimensions()
-unsigned int evec::EuclideanVector::getNumDimensions() {
+unsigned int evec::EuclideanVector::getNumDimensions() const  {
     return (unsigned int) magnit->size();
 }
-double evec::EuclideanVector::get(unsigned int i) {
+double evec::EuclideanVector::get(unsigned int i) const {
     return magnit->at(i);
 }
 double evec::EuclideanVector::getEuclideanNorm(){
@@ -66,3 +69,34 @@ void evec::EuclideanVector::getc(){
     std::cout<<this->magnit->size();
 }
 
+evec::EuclideanVector evec::EuclideanVector::createUnitVector() {
+    double norm  = getEuclideanNorm();
+    EuclideanVector result(int(magnit->size()));
+    for (unsigned int i = 0; i < magnit->size(); ++i) {
+        result[i] = magnit->at(i) / norm;
+    }
+    return result;
+}
+
+double & evec::EuclideanVector::operator[](int i) {
+    return magnit->at(i);
+}
+
+
+evec::EuclideanVector & evec::EuclideanVector::operator= (const evec::EuclideanVector &rhs) {
+    delete magnit;
+    magnit = nullptr;
+    magnit = new std::vector<double>;
+    for (unsigned int i = 0; i < rhs.getNumDimensions(); ++i) {
+        magnit->push_back(rhs.get(i));
+    }
+    return *this;
+}
+// friend function
+evec::EuclideanVector evec::operator + (const evec::EuclideanVector &a, const evec::EuclideanVector &b) {
+    evec::EuclideanVector result(a.getNumDimensions());
+    for (unsigned int i = 0; i < a.getNumDimensions(); i++) {
+        result[i] = a.get(i) + b.get(i);
+    }
+    return result;
+}
