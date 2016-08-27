@@ -92,11 +92,36 @@ evec::EuclideanVector & evec::EuclideanVector::operator= (const evec::EuclideanV
     }
     return *this;
 }
+
+
+// +=
+evec::EuclideanVector& evec::EuclideanVector::operator+= (const evec::EuclideanVector &rgt) {
+
+    for (unsigned int i = 0; i < rgt.getNumDimensions(); i++) {
+        magnit->at(i) = magnit->at(i) + rgt.get(i);
+    }
+    return *this;
+}
+
+
+
+
+
+
 // friend function
+// +
 evec::EuclideanVector evec::operator + (const evec::EuclideanVector &a, const evec::EuclideanVector &b) {
     evec::EuclideanVector result(a.getNumDimensions());
     for (unsigned int i = 0; i < a.getNumDimensions(); i++) {
         result[i] = a.get(i) + b.get(i);
+    }
+    return result;
+}
+// -
+evec::EuclideanVector evec::operator - (const evec::EuclideanVector &lft, const evec::EuclideanVector &rgt) {
+    evec::EuclideanVector result(lft.getNumDimensions());
+    for (unsigned int i = 0; i < lft.getNumDimensions(); i++) {
+        result[i] = lft.get(i) - rgt.get(i);
     }
     return result;
 }

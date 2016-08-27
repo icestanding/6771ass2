@@ -53,6 +53,7 @@ namespace evec {
         double get(unsigned int i) const;
         double getEuclideanNorm();
         EuclideanVector createUnitVector();
+        void getc();
 
         /*****************************************************/
         /*************** operator overload *******************/
@@ -62,15 +63,23 @@ namespace evec {
         double & operator[](int i);
 
         // copy assignment
-        EuclideanVector & operator=(const EuclideanVector &rhs);
+        EuclideanVector& operator= (const EuclideanVector &rhs);
 
+        // member operator
+        EuclideanVector& operator+= (const EuclideanVector &);
+
+
+
+        // operator
         friend EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &);
+        friend EuclideanVector operator - (const EuclideanVector &, const EuclideanVector &);
 
-        void getc();
+
 
     };
 
     EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &) ;
+    EuclideanVector operator - (const EuclideanVector &, const EuclideanVector &);
 
 }
 
