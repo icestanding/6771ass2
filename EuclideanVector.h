@@ -1,5 +1,5 @@
 //
-// Created by chenyu on 24/08/16.
+// Created by chenyu(Z3492794) on 24/08/16.
 //
 #include <arpa/nameser.h>
 #include <vector>
@@ -41,7 +41,7 @@ namespace evec {
         EuclideanVector(const EuclideanVector &a);
 
         // move constructor
-        EuclideanVector(EuclideanVector &&a);
+        EuclideanVector(EuclideanVector &&a) noexcept;
 
         // Destructor, need more stuff
         ~EuclideanVector();
@@ -62,24 +62,43 @@ namespace evec {
         // get specific value
         double & operator[](int i);
 
-        // copy assignment
+        // Assignment
+        // Copy
         EuclideanVector& operator= (const EuclideanVector &rhs);
-
-        // member operator
+        // Move
+        EuclideanVector& operator= (EuclideanVector &&rhs) noexcept;
+        // Operator
         EuclideanVector& operator+= (const EuclideanVector &);
+        EuclideanVector& operator-= (const EuclideanVector &);
+        EuclideanVector& operator*= (const double &);
+        EuclideanVector& operator/= (const double &);
+        // Type Conversion
+        operator std::vector<double> const();
+        operator std::list<double> const();
 
-
-
-        // operator
+        // Operator
         friend EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &);
         friend EuclideanVector operator - (const EuclideanVector &, const EuclideanVector &);
-
-
+        friend double operator* (const EuclideanVector &, const EuclideanVector &);
+        friend EuclideanVector operator* (const EuclideanVector &, double num);
+        friend EuclideanVector operator / (const EuclideanVector &, const double &);
+        friend std::ostream& operator<< (std::ostream& os, const EuclideanVector& obj);
 
     };
 
-    EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &) ;
+    // +
+    EuclideanVector operator + (const EuclideanVector &, const EuclideanVector &);
+    // -
     EuclideanVector operator - (const EuclideanVector &, const EuclideanVector &);
+    // *
+    // for [][]
+    double operator * (const EuclideanVector &, const EuclideanVector &);
+    // for []*double
+    EuclideanVector operator * (const EuclideanVector &, const double &);
+    // /
+    EuclideanVector operator / (const EuclideanVector &, const double &);
+    // stream output
+    std::ostream& operator<< (std::ostream& os, const EuclideanVector& obj);
 
 }
 

@@ -23,10 +23,5 @@ int main() {
 
     evec::EuclideanVector abc;
 
-
-    d+=c;
-
-    std::cout<<d[0];
-
-
+    std::cout<<e;
 }

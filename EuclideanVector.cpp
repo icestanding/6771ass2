@@ -2,7 +2,7 @@
 #include <iostream>
 #include<cmath>
 //
-// Created by chenyu on 24/08/16.
+// Created by chenyu(Z3492794) on 24/08/16.
 //
 
 // be remeber of the return scope of the code
@@ -35,8 +35,8 @@ EuclideanVector(std::vector<double>::const_iterator begin,
                 std::vector<double>::const_iterator end):
         magnit{new std::vector<double>{begin, end}} {};
 
-// move constructor
-evec::EuclideanVector::EuclideanVector(EuclideanVector &&a): magnit(a.magnit) {
+// move constructor, noexcept
+evec::EuclideanVector::EuclideanVector(EuclideanVector &&a) noexcept: magnit(a.magnit) {
     a.magnit = nullptr;
 }
 
@@ -82,7 +82,7 @@ double & evec::EuclideanVector::operator[](int i) {
     return magnit->at(i);
 }
 
-
+// copy assignment '='
 evec::EuclideanVector & evec::EuclideanVector::operator= (const evec::EuclideanVector &rhs) {
     delete magnit;
     magnit = nullptr;
@@ -90,6 +90,16 @@ evec::EuclideanVector & evec::EuclideanVector::operator= (const evec::EuclideanV
     for (unsigned int i = 0; i < rhs.getNumDimensions(); ++i) {
         magnit->push_back(rhs.get(i));
     }
+    return *this;
+}
+
+// move assignment '='
+evec::EuclideanVector & evec::EuclideanVector::operator= (evec::EuclideanVector &&rhs) noexcept {
+   if(this != &rhs) {
+       this->magnit = rhs.magnit;
+       delete rhs.magnit;
+       rhs.magnit = nullptr;
+   }
     return *this;
 }
 
@@ -102,8 +112,40 @@ evec::EuclideanVector& evec::EuclideanVector::operator+= (const evec::EuclideanV
     }
     return *this;
 }
+// -=
+evec::EuclideanVector& evec::EuclideanVector::operator-= (const evec::EuclideanVector &rgt) {
 
+    for (unsigned int i = 0; i < rgt.getNumDimensions(); i++) {
+        magnit->at(i) = magnit->at(i) - rgt.get(i);
+    }
+    return *this;
+}
+// *=
+evec::EuclideanVector& evec::EuclideanVector::operator*= (const double &s) {
 
+    for (unsigned int i = 0; i < getNumDimensions(); i++) {
+        magnit->at(i) = magnit->at(i) *s;
+    }
+    return *this;
+}
+// /=
+evec::EuclideanVector& evec::EuclideanVector::operator/= (const double &s) {
+
+    for (unsigned int i = 0; i < getNumDimensions(); i++) {
+        magnit->at(i) = magnit->at(i) / s;
+    }
+    return *this;
+}
+// Type Conversion
+evec::EuclideanVector::operator std::vector<double> const() {
+    std::vector<double> result = *magnit;
+    return result;
+};
+
+evec::EuclideanVector::operator std::list<double> const() {
+    std::list<double> result(magnit->begin(), magnit->end());
+    return result;
+};
 
 
 
@@ -124,4 +166,44 @@ evec::EuclideanVector evec::operator - (const evec::EuclideanVector &lft, const 
         result[i] = lft.get(i) - rgt.get(i);
     }
     return result;
+}
+//  []*[]
+double evec::operator* (const EuclideanVector &f, const EuclideanVector &s) {
+    double result = 0;
+    for (unsigned int i = 0; i < f.getNumDimensions(); ++i) {
+        result += (f.get(i) * s.get(i));
+    }
+    return result;
+}
+//  []*double
+evec::EuclideanVector evec::operator* (const evec::EuclideanVector &f, const double &num) {
+    EuclideanVector result(f.getNumDimensions());
+    for (unsigned int i = 0;  i < f.getNumDimensions(); ++i) {
+        result[i] = f.get(i) * num;
+    }
+    return result;
+}
+// []/double
+evec::EuclideanVector evec::operator / (const evec::EuclideanVector &f, const double &num) {
+    EuclideanVector result(f.getNumDimensions());
+    for (unsigned int i = 0;  i < f.getNumDimensions(); ++i) {
+        result[i] = f.get(i) / num;
+    }
+    return result;
+}
+// stream << output
+std::ostream & evec::operator<<(std::ostream &os, const EuclideanVector &obj) {
+    if (obj.magnit == nullptr) {
+        os <<'['<<']';
+        return os;
+    }
+    os<<'[';
+    for (unsigned int i = 0; i < obj.getNumDimensions() ; ++i) {
+        if(i == obj.getNumDimensions() - 1) {
+            os<<obj.get(i)<<']';
+        }
+        os<<obj.get(i)<<' ';
+    }
+    return os;
+
 }
