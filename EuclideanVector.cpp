@@ -11,6 +11,7 @@
 /******************************************************/
 /************* Constructor ****************************/
 /******************************************************/
+
 evec::EuclideanVector::EuclideanVector(int n_dim, double i_mag) : size_{n_dim}, parray_{new double[n_dim]} {
     for(unsigned int i; i < size_; i++) {
         *(parray_ + i) = i_mag;
@@ -233,7 +234,7 @@ evec::EuclideanVector evec::operator / (const evec::EuclideanVector &f, const do
     return result;
 }
 // == operator
-bool evec::operator == (const EuclideanVector &l, const EuclideanVector &r) {
+bool evec::operator == (const evec::EuclideanVector &l, const evec::EuclideanVector &r) {
     if (l.size_ != r.size_) {
         return false;
     }
@@ -245,7 +246,7 @@ bool evec::operator == (const EuclideanVector &l, const EuclideanVector &r) {
     return true;
 }
 // != operator
-bool evec::operator != (const EuclideanVector &l, const EuclideanVector &r) {
+bool evec::operator != (const evec::EuclideanVector &l, const evec::EuclideanVector &r) {
     if (l == r) {
         return false;
     }
