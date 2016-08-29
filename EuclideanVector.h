@@ -15,7 +15,9 @@
 namespace evec {
     class EuclideanVector {
     private:
-        std::vector<double> *magnit;
+        int size_;
+        double *parray_;
+
     public:
         /******************************************************/
         /************* Constructor ****************************/
@@ -27,11 +29,10 @@ namespace evec {
         // delegate constructor
         EuclideanVector(int n_dim);
 
-        // template/range constructor
-//        template<class T>
+        // for list
         EuclideanVector(std::list<double>::iterator begin, std::list<double>::iterator end);
 
-//        template<class C>
+        // for vector
         EuclideanVector(std::vector<double>::const_iterator begin, std::vector<double>::const_iterator end);
 
         // initial_list constructor
@@ -53,7 +54,7 @@ namespace evec {
         double get(unsigned int i) const;
         double getEuclideanNorm();
         EuclideanVector createUnitVector();
-        void getc();
+
 
         /*****************************************************/
         /*************** operator overload *******************/
@@ -83,6 +84,8 @@ namespace evec {
         friend EuclideanVector operator* (const EuclideanVector &, double num);
         friend EuclideanVector operator / (const EuclideanVector &, const double &);
         friend std::ostream& operator<< (std::ostream& os, const EuclideanVector& obj);
+        friend bool operator == (const EuclideanVector &, const EuclideanVector &);
+        friend bool operator != (const EuclideanVector &, const EuclideanVector &);
 
     };
 
@@ -97,6 +100,10 @@ namespace evec {
     EuclideanVector operator * (const EuclideanVector &, const double &);
     // /
     EuclideanVector operator / (const EuclideanVector &, const double &);
+    // for ==
+    bool operator == (const EuclideanVector &, const EuclideanVector &);
+    // for !=
+    bool operator == (const EuclideanVector &, const EuclideanVector &);
     // stream output
     std::ostream& operator<< (std::ostream& os, const EuclideanVector& obj);
 
